@@ -15,25 +15,10 @@ class AmadouNews
         include_once plugin_dir_path( __FILE__ ).'/newsletter.php';
         include_once plugin_dir_path( __FILE__ ).'/EmailsList.php';
         new Newsletter();
-        register_activation_hook(__FILE__, array($this, 'activation'));
-        register_uninstall_hook(__FILE__, [$this,'uninstall']);
+        register_activation_hook(__FILE__, array('Newsletter', 'activation'));
+        register_uninstall_hook(__FILE__, array('Newsletter', 'uninstall'));
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('wp_loaded', array('Newsletter', 'insertion'));
-    }
-    /**
-     * activation() : static function loaded when the plugin is activated. It will create the DB where emails will be saved
-     */
-    public static function activation(){
-        global $wpdb;
-
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}amadou_newsletter (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255) NOT NULL, saved_at TIMESTAMP );");
-    }
-
-    /**
-     * This function will be loaded when the plugin is being uninstalled
-     */
-    public static function uninstall(){
-        return true;
     }
     //Adding a menus
     public function add_admin_menu(){

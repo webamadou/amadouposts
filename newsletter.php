@@ -9,6 +9,25 @@ class Newsletter
     }
 
     /**
+     * activation() : static function loaded when the plugin is activated. It will create the DB where emails will be saved
+     */
+    public static function activation(){
+        global $wpdb;
+
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}amadou_newsletter (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255) NOT NULL, saved_at TIMESTAMP );");
+    }
+
+    /**
+     * This function will be loaded when the plugin is being uninstalled
+     */
+    public static function uninstall()
+    {
+        global $wpdb;
+
+        $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}amadou_newsletter;");
+    }
+
+    /**
      * Insertion this will save the entered email to the database
      */
     public function insertion()
